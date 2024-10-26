@@ -1,6 +1,132 @@
 
 fn main() {
-data_types();
+    control_flow();
+}
+
+fn control_flow() {
+    /*
+    If expression
+    - allow code sections to be executed when a certain condition is met
+    - the result of a conditional expression must be of type bool (no implicit conversion as in some languages)
+    - return a result, which, for example, can be assigned to a variable or used in other ways (returned results must be of the same type, all possible scenarios must be taken care of)
+    */
+
+    let number = 3;
+    if number < 5 {
+        println!("Number is lower than 5");
+    } else if number > 5 {
+        println!("Number is greater than 5");
+    } else {
+        println!("Number is equal 5");
+    }
+
+    let some_condition = true;
+    let _option: char = if some_condition { 'a' } else { 'b' };
+
+    /*
+    Match expression
+    - allow code sections to be executed when a certain condition is met
+    - return a result, which, for example, can be assigned to a variable or used in other ways (returned results must be of the same type, all possible scenarios must be taken care of)
+    */
+
+    let dice_roll = 3;
+    let _roll_result = match dice_roll {
+        6 => "Win",
+        val @ 1 => {
+            println!("You lost! {val}");
+            "Loose"
+        }
+        value => {
+            // if you are not interested in the value you can use _
+            println!("You hit {value}, try again");
+            "Try again"
+        }
+    };
+
+    let x = 1;
+
+    match x {
+        1 | 2 => println!("one or two"),
+        3 => println!("three"),
+        _ => println!("anything"),
+    }
+
+    let x = 5;
+
+    match x {
+        1..=5 => println!("one through five"),
+        _ => println!("something else"),
+    }
+
+    let sky = "cloudy";
+    let temperature = "warm";
+    match (sky, temperature) {
+        ("cloudy", "cold") => println!("It's dark and unpleasant today"),
+        ("clear", "warm") => println!("It's a nice day"),
+        ("cloudy", _) => println!("It's dark but not bad"),
+        _ => println!("Not sure what the weather is."),
+    }
+
+    let num = Some(4);
+
+    match num {
+        Some(x) if x % 2 == 0 => println!("The number {} is even", x), // match guard
+        Some(x) => println!("The number {} is odd", x),
+        _ => (),
+    }
+
+    // Loops
+
+    // loop
+
+    let mut counter = 0;
+    let result = 'myLoop: loop {
+        counter += 1;
+        if counter == 20 {
+            break 'myLoop counter * 2;
+        }
+    };
+    println!("The loop result is: {result}");
+
+    // while
+
+    let mut number = 3;
+    while number != 0 {
+        println!("{number}");
+        number -= 1;
+        break;
+    }
+
+    // for in
+
+    let elements = [1, 2, 3, 4, 5];
+
+    for index in 0..4 {
+        println!("Current element: {}", elements[index]);
+    }
+
+    for element in elements {
+        println!("Current element: {}", element);
+    }
+
+    for _ in (0..elements.len()).step_by(2) {
+        println!("Next loop");
+    }
+}
+
+fn functions() {
+    println!("Addition result: {}", add(1, 2));
+    println!("Validation result: {}", validate(10, is_even));
+    println!(
+        "Validation result: {}",
+        validate(10, |value| value % 2 == 0)
+    );
+
+    // block expression
+    let _score = {
+        let x = 3;
+        x * 3
+    };
 }
 
 /*
