@@ -4,18 +4,18 @@ const ARG_PREFIX: &str = "-";
 
 enum Mode {
     Default,
-    WithNumbering { igonre_empty_lines: bool }
+    WithNumbering { ignore_empty: bool }
 }
 
 impl Mode {
-    
+
     fn from(options: &Vec<String>) -> Mode {
         if options.is_empty() {
             Mode::Default
         } else {
             match options[0].as_str() {
-                "-n" => Mode::WithNumbering { igonre_empty_lines: false },
-                "-nb" => Mode::WithNumbering { igonre_empty_lines: true },
+                "-n" => Mode::WithNumbering { ignore_empty: false },
+                "-nb" => Mode::WithNumbering { ignore_empty: true },
                 _ => Mode::Default
             }
         }
@@ -47,17 +47,17 @@ fn show_help() {
 
 fn cat(mode: &Mode, paths: &Vec<String>) {
     let print_line = match mode {
-        Mode::WithNumbering { igonre_empty_lines: false } => print_with_line_numbers,
-        Mode::WithNumbering { igonre_empty_lines: true } => print_with_line_numbers_ignoring_empty_lines,
+        Mode::WithNumbering { ignore_empty: false } => print_with_numbering,
+        Mode::WithNumbering { ignore_empty: true } => print_with_numbering_ignoring_empty,
         _ => print_line
     };
     for path in paths {
         let Ok(file) = File::open(path) else {
-            println!("Failed to open {path}");
+            eprintln!("Failed to open {path}");
             continue;
         };
         println!("File: {path}");
-        let reader = BufReader::new(file);  
+        let reader = BufReader::new(file);
         for (line_number, line) in reader.lines().enumerate() {
             let line_text = line.expect("Failed to read line");
             print_line(line_number + 1, &line_text);
@@ -69,14 +69,14 @@ fn print_line(_line_number: usize, line: &String) {
     println!("{line}");
 }
 
-fn print_with_line_numbers(line_number: usize, line: &String) {
+fn print_with_numbering(line_number: usize, line: &String) {
     println!("{:3}:\t{}", line_number, line);
 }
 
-fn print_with_line_numbers_ignoring_empty_lines(line_number: usize, line: &String) {
+fn print_with_numbering_ignoring_empty(line_number: usize, line: &String) {
     if line.is_empty() {
         println!();
     } else {
-        print_with_line_numbers(line_number, line);
+        print_with_numbering(line_number, line);
     }
 }
