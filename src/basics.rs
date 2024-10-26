@@ -1,11 +1,3 @@
-use memory_management::run;
-
-mod memory_management;
-mod collections_generics_traits;
-
-fn main() {
-}
-
 /*
 Structs
 - group elements of any type, but unlike tuples, allow them to be named
