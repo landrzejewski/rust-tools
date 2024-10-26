@@ -99,7 +99,7 @@ fn memory_management() {
     let mut a = String::from("aaa");
     let b = &mut a;
     b.push('b'); // b is not the owner, it is just a read only reference
-                 // let c = &a; // read/access is not possible because there is still a chance of mutation (line below)
+    // let c = &a; // read/access is not possible because there is still a chance of mutation (line below)
     b.push('c'); // error
 
     /*
@@ -159,7 +159,7 @@ fn restrictions_after_defining_mutable_reference() {
     // and you can't do this either (println! tries to borrow s).
     // println!("s: {}", s);  // Nope!
     r1.push_str("!");
-    println!("r1: {}", r1);
+    println!("r1: {}", s);
 }
 
 fn restrictions_after_defining_immutable_reference() {
@@ -203,7 +203,7 @@ fn lifetimes() {
     let result;
     {
         //let s2 = String::from("def");
-        // result = get_longer(&s1, &s2);
+        //result = get_longer(&s1, &s2);
         let s2 = "def"; // str is alive/exists for the duration of the application
         result = get_longer(s1.as_str(), s2);
     }
